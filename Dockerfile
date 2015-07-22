@@ -1,17 +1,14 @@
-FROM            ubuntu:12.04
-MAINTAINER      James Sharp <james@ortootech.com>
+FROM            nginx
+MAINTAINER      Rick Copeland <rick@synapp.io>
 
-RUN        echo 'deb http://archive.ubuntu.com/ubuntu precise main universe' > /etc/apt/sources.list
-RUN        apt-get update
-
-# Install nginx
-RUN        apt-get install -y -q nginx
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
-# Expose port 80
+ENV PORT=80
 EXPOSE 80
 
-CMD ["nginx"]
-
 # Add in the config
-ADD default /etc/nginx/sites-available/default
+ADD default /etc/nginx/conf.d/default.conf
+ADD start-nginx.bash /bin/start-nginx.bash
+
+CMD ["/bin/bash", "/bin/start-nginx.bash"]
+
